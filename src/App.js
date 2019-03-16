@@ -24,7 +24,7 @@ const App = () => {
                 title="Pay $18.40"
                 visible={modal}
                 footer={[
-                    <Button key="submit" type="primary" loading={isProcessing} onClick={handleSubmit}>
+                    <Button key="submit" type="primary" loading={false} onClick={handleSubmit}>
                       Submit Payment
                     </Button>,
                   ]}

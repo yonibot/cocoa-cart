@@ -2,9 +2,18 @@ import React, { useState } from 'react';
 import { Button, Modal } from 'antd';
 import ChocolateShoppe from './ChocolateShoppe';
 import { Main, CardNumber, CardExpiry, CardCvc, FormInput, CreditCardForm, Label } from './AppComponents';
+import usePaymentProcessing from './services/usePaymentProcessing';
 import './App.css';
 
 const App = () => {
+
+    const {
+        isProcessing,
+        errorMessage,
+        paymentStatus,
+        createPayment,
+    } = usePaymentProcessing();
+
 
     const [modal, setModal] = useState(false);
     const [cardNumber, setCardNumber] = useState(null);
@@ -12,7 +21,7 @@ const App = () => {
     const [cardCvc, setCardCvc] = useState(null);
     
     const handleSubmit = () => {
-        // create a payment
+        createPayment({cardNumber, cardExpiry, cardCvc});
     }
 
     return (
@@ -24,7 +33,7 @@ const App = () => {
                 title="Pay $18.40"
                 visible={modal}
                 footer={[
-                    <Button key="submit" type="primary" loading={false} onClick={handleSubmit}>
+                    <Button key="submit" type="primary" loading={isProcessing} onClick={handleSubmit}>
                       Submit Payment
                     </Button>,
                   ]}

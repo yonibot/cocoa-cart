@@ -1,12 +1,17 @@
-import React, { useState } from 'react';
-import { Button, Modal } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Button, Modal, Typography } from 'antd';
 import ChocolateShoppe from './ChocolateShoppe';
 import { Main, CardNumber, CardExpiry, CardCvc, FormInput, CreditCardForm, Label } from './AppComponents';
-import usePaymentProcessing from './services/usePaymentProcessing';
+import usePaymentProcessing, { PAYMENT_STATUS } from './services/usePaymentProcessing';
 import './App.css';
 
 const App = () => {
 
+    const [modal, setModal] = useState(false);
+    const [cardNumber, setCardNumber] = useState(null);
+    const [cardExpiry, setCardExpiry] = useState(null);
+    const [cardCvc, setCardCvc] = useState(null);
+    
     const {
         isProcessing,
         errorMessage,
@@ -14,16 +19,17 @@ const App = () => {
         createPayment,
     } = usePaymentProcessing();
 
+    useEffect(() => {
+        if (paymentStatus === PAYMENT_STATUS.success) {
+            setModal(false)
+        }
+    }, [paymentStatus]);
 
-    const [modal, setModal] = useState(false);
-    const [cardNumber, setCardNumber] = useState(null);
-    const [cardExpiry, setCardExpiry] = useState(null);
-    const [cardCvc, setCardCvc] = useState(null);
-    
-    const handleSubmit = () => {
+
+    const handleSubmit = async () => {
         createPayment({cardNumber, cardExpiry, cardCvc});
     }
-
+    
     return (
         <Main>
             <ChocolateShoppe />
@@ -38,6 +44,7 @@ const App = () => {
                     </Button>,
                   ]}
                 onCancel={() => setModal(false)} >
+                <Typography.Text type="danger">{errorMessage}</Typography.Text>
                 <CreditCardForm>
                     <FormInput>
                         <Label>Card Number:</Label>

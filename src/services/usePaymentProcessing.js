@@ -2,7 +2,6 @@ import { useState } from 'react';
 import * as PaymentProcessorApi from '../api/PaymentProcessorApi';
 import * as MyServer from '../api/MyServer';
 
-
 export const PAYMENT_STATUS = {
     success: 'SUCCESS',
     fail: 'FAIL',
@@ -14,6 +13,7 @@ export default function usePaymentProcessing() {
     const [paymentStatus, setPaymentStatus] = useState(null);
 
     const createPayment = async (paymentDetails) => {
+        setErrorMessage(null);
         setIsProcessing(true);
         try {
             const token = await PaymentProcessorApi.createToken(paymentDetails)

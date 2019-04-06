@@ -1,0 +1,6 @@
+{
+  "eslint.enable": false,
+  "editor.formatOnSave": true,
+  "diffEditor.renderIndicators": false,
+  "git.showInlineOpenFileAction": false
+}
